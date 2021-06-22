@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>02_计算属性-computed</title>
+<script type="text/javascript" src="../vue.js"></script>
+</head>
+<body>
+  <!-- 准备好一个容器-->
+  <div id="root">
+    姓：<input type="text" v-model="firstName"> <br/>
+    名：<input type="text" v-model="lastName"><br/>
+    <!-- 插值语法实现 -->
+    <!-- 
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      computed属性
+      当data内的数据改变时，会把MVVM中的V全部过一遍，看看有哪些用到data内数据改变的就做出改变。
+      对于用了methods的，全部重新执行一遍，不管里边是否用到了data数据。computed内的就不同了，只有用到了data数据时，才会随着重新执行。
+      ???是这样吗？没有生命周期吗？？？
+    -->
+    <span>全名:{{getFullName()}}</span>
+  </div>
+
+  <script type="text/javascript" >
+    new Vue({
+      el:'#root',
+      data:{
+        firstName:'张',
+        lastName:'三'
+      },
+      methods:{
+        getFullName(){
+          console.log('getFullName被调用了')
+          return this.firstName + '-' + this.lastName
+        }
+      }
+    })
+  </script>
+</body>
+</html>

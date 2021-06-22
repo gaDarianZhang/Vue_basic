@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>列表更新</title>
+		<script type="text/javascript" src="../vue.js"></script>
+	</head>
+	<body>
+		<!-- 
+			Vue数据绑定的原理
+					1. vue会监视data中所有层次对象的属性
+					2. 对象中的属性数据通过添加set方法来来实现监视
+					3. 数组中也实现了监视: 重写数组一系列更新元素的方法，做了两件事：
+								1).调用原生对应的方法对数组进行处理
+								2).去更新界面
+		-->
+		<!-- 准备好一个容器-->
+		<div id="root">
+			<h2>人员列表</h2>
+			<input v-model="keyWord" type="text" placeholder="请输入姓名">
+			<button @click="sortType = 1">年龄升序↓</button>
+			<button @click="sortType = 2">年龄降序↓</button>
+			<button @click="sortType = 0">原顺序</button>
+			<button @click="updateMei">更改马冬梅的信息</button>
+			<ul>
+				<li v-for="(p,index) in fmtPersons" :key="p.id">
+					{{p.name}}--{{p.sex}}--{{p.age}}岁
+				</li>
+			</ul>
+		</div>
+
+		<!-- 
+			!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			- vue给data内所有的属性都添加了setter和getter，还给所有层次的对象的属性也添加了setter和getter方法。
+				当这些被添加了setter和getter的属性发生了变化时，就会被vue监测到，就会更新页面。
+			- 如下，当修改persons数组内的内容是，如果使用persons[0] = {id:'000',name:"张三",age:21},这样的话，persons作为对象类型，
+				persons指向的地址还是没变化的，而且只有persons和内部对象的属性能被监测到改变，数组元素是没被监测到的，所以页面不会更新，
+				但是persons对象内容确是实实在在被修改了。
+				- 如果真想使用这种修改方法，可以调用被vue重新封装过的pop,push,unshift等函数，空调用一下，不传值，晃一下vue。
+			- 当persons数组内的元素被按照整体修改的方式修改之后，即使调用了vue的pop,push等方法让页面刷新，但是修改的那个对象内的属性
+				就没有了setter和getter
+			- persons1[0].name='查娜'这种方式修改可以引起页面刷新
+      - 直接用this.persons.push({name:'拉拉',age:20,sex:'女',id:'005'})压入的对象的属性有setter和getter
+
+		-->
+		<script type="text/javascript" >
+			const vm = new Vue({
+				el:'#root',
+				data:{
+					keyWord:'',
+					sortType:0, //0原顺序 1升序  2降序
+					persons:[
+						{id:'001',name:'马冬梅',age:35,sex:'女',a:{b:{c:{d:{e:1}}}}},
+						{id:'002',name:'周冬雨',age:20,sex:'女'},
+						{id:'003',name:'周杰伦',age:41,sex:'男'},
+						{id:'004',name:'温兆伦',age:25,sex:'男'},
+					]
+				},
+
+				methods:{
+					updateMei(){
+						console.log(this)
+						// this.persons[0].name = '小佩奇' //代码奏效
+						// this.persons[0].age = 99 //代码奏效
+						// this.persons[0].sex = '男' //代码奏效
+						this.persons[0] = {name:'小佩奇',age:99,sex:'男'} //不奏效
+            this.persons.push()//奏效
+            this.persons.push({name:'拉拉',age:20,sex:'女',id:'005'})
+					}
+				},
+
+				//使用computed过滤，优势：不影响原数据
+				computed:{
+					fmtPersons(){
+						const {persons,keyWord,sortType} = this
+						//根据关键词过滤
+						let arr =  persons.filter( p => p.name.indexOf(keyWord) !== -1)
+						//若需要排序
+						if(sortType){
+							//排序
+							arr.sort((a,b)=>{
+								if(sortType === 1) return a.age - b.age
+								else return b.age - a.age
+							})
+						}
+						return arr
+					}
+				}
+
+			})
+		</script>
+	</body>
+</html>
