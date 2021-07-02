@@ -8,10 +8,8 @@
 
 <script>
 import Hello from './components/Hello'
-import Hello from './components/Hello.vue'
 import School from './components/School.vue'
 export default {
-  components: { Hello },
   data() {
     return {
       car:'马自达'

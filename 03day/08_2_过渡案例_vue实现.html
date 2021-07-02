@@ -8,7 +8,11 @@
 			.picture{
 				width: 100px;
 			}
-
+			.box{
+				width: 100px;
+				height: 100px;
+				background-color: aquamarine;
+			}
 			/* 离开的起点，进入的终点 */
 			.qiuku-leave,.qiuku-enter-to{
 				opacity: 1;
@@ -43,10 +47,19 @@
 		<div id="root">
 			<button @click="isShow = !isShow">切换</button> <br/>
 
+			<!-- 
+				!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				<transition> can only be used on a single element. Use <transition-group> for lists.
+				<transition-group> children must be keyed:
+			-->
 			<transition name="qiuku">
 				<img v-show="isShow" class="picture" src="https://s3.ax1x.com/2020/12/13/reCaqg.jpg" >
-				<div v-show="isShow"></div>
+				<!-- <div class="box" v-show="isShow">123</div> -->
 			</transition>
+			<transition-group name="qiuku">
+				<img key="1" v-show="isShow" class="picture" src="https://s3.ax1x.com/2020/12/13/reCaqg.jpg" >
+				<div key="2" class="box" v-show="isShow">123</div>
+			</transition-group>
 
 		</div>
 

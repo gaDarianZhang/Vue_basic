@@ -16,14 +16,14 @@
 			const vm = new Vue({
 				el:'#root',
 				data:{
-					opacity:1
+					opacity:1,
 				},
 				methods:{
 					death(){
 						/* 
 							!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 							vm还在，只是vm不管理root容器中的数据了，数据的监听也没了,但是setter和getter还在。
-							和react的unmount有很大的差别，react直接把组件都从DOM中去掉了。vm的DOM还是，只是不再监听数据。
+							和react的unmount有很大的差别，react直接把组件都从DOM中去掉了。vm的DOM还在，只是不再监听数据。
 							!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 						*/
 						this.$destroy() 
@@ -46,6 +46,9 @@
 				beforeDestroy() {
 					clearInterval(this.timer)
 				},
+				destroyed(){
+					console.log(this);
+				}
 			})
 		</script>
 	</body>

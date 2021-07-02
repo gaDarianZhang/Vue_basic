@@ -14,6 +14,7 @@ export default {
 <template>
   <div>
     <h1>Hello</h1>
+    <!-- 使用了School组件 -->
     <School/>
   </div>
 </template>
